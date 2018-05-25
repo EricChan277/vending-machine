@@ -1,4 +1,22 @@
 {
+  "CoinValue": [
+    {
+      "Quarter": 0.25,
+      "Nickel": 0.05,
+      "Dime": 0.1,
+      "Loonie": 1.0,
+      "Toonie": 2.0
+    }
+  ],
+  "Amount of Coins": [
+    {
+      "Quarter": 20,
+      "Nickel": 40,
+      "Dime": 20,
+      "Loonie": 20,
+      "Toonie": 20
+    }
+  ],
   "STEM": [
     {
       "Engineering Degree": {
