@@ -13,14 +13,19 @@
 
 </p>
 
-> This app is vending machine that accepts a selection from a user and then returns an expected output, developed by using a BDD (Behavior Driven Development) and a TDD (Test Driven Development) approach through Jest
+> This app is vending machine that accepts a selection from a user and then returns an expected output, developed by using a BDD (Behavior Driven Development) and a TDD (Test Driven Development) approach using [Jest](https://facebook.github.io/jest/en/).
 
 ## Table of Contents
 
+* [Screenshot](#At-a-glance)
 * [Install](#install)
 * [Usage](#usage)
 * [Maintainers](#maintainers)
 * [License](#license)
+
+## At a glance
+
+![](/assets/screenshot.png)
 
 ## Install
 

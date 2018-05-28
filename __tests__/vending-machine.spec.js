@@ -167,13 +167,10 @@ describe('A vending machine that sells degrees', () => {
       expect(change).toEqual(0);
     });
     it('Should return the change in coin form, if any', () => {
-      const input = degree.subject.checkPrice(degree.data.inputAmount.over);
-      const { price } = degree.subject.vend(degree.name);
       const coins = degree.subject.checkCoinCount();
-      const change = degree.subject.checkChange(input, price);
-      const changeInCoins = degree.subject.returnCoins(change, coins);
+      const changeInCoins = degree.subject.returnCoins(2, coins);
 
-      expect(changeInCoins).toEqual(typeof {});
+      expect(changeInCoins).toEqual('toonie 1');
     });
   });
 });

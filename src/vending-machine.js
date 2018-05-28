@@ -57,12 +57,29 @@ module.exports = class VendingMachine {
       return change;
     }
   }
-  returnCoins(price, coinCount) {
-    for (let i = 0; i < Object.entries(coinCount).length; i++) {
-      let coinVal = Object.entries(coinCount)[i][1].value;
-      let coinName = Object.entries(coinCount)[i][0];
-      console.log(coinName + ' ' + coinVal);
+  returnCoins(price, coins) {
+    if (price == 0) {
+      return 0;
+    } else {
+      while (price > 0) {
+        for (let i = 0; i < Object.entries(coins).length - 1; i++) {
+          const coinVal = Object.entries(coins)[i][1].value;
+          const coinName = Object.entries(coins)[i][0];
+          let coinCount = Object.entries(coins)[i][1].currentAmount;
+
+          var countOfDispensed = 0;
+          if (price == coinVal || price - coinVal < 0 || coinCount == 0) {
+            return coinName + ' ' + (i + 1);
+          } else {
+            price = price - coinVal;
+
+            countOfDispensed++;
+            coinCount--;
+            let leftover = coinName + ' ' + countOfDispensed;
+            return leftover;
+          }
+        }
+      }
     }
-    console.log(price);
   }
 };
