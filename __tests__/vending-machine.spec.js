@@ -47,7 +47,18 @@ describe('A vending machine that sells degrees', () => {
       stem: {
         [degree.name]: {
           price: 3.45,
-          stock: 1
+          stock: 3,
+          maxStock: 5
+        },
+        compSci: {
+          price: 3.3,
+          stock: 1,
+          maxStock: 5
+        },
+        biology: {
+          price: 3.35,
+          stock: 5,
+          maxStock: 5
         }
       },
       inputAmount: {
@@ -85,8 +96,18 @@ describe('A vending machine that sells degrees', () => {
   describe('The Stocker wants to check the inventory', () => {
     it('Should return the inventory.', () => {
       const stem = degree.subject.checkStock();
-      //   console.log(stem);
       expect(stem).toEqual(degree.data.stem);
+    });
+  });
+  describe('The Stocker wants to refill the stock', () => {
+    it('should refill the missing items to max stock value', () => {
+      const stem = degree.subject.checkStock();
+      const fillStock = degree.subject.fillStock(stem);
+
+      for (let i = 0; i < Object.entries(degree.data.stem).length; i++) {
+        const maxStock = Object.entries(degree.data.stem)[i][1].maxStock;
+        expect(fillStock).toEqual(maxStock);
+      }
     });
   });
   describe('The Student selects a Degree', () => {
@@ -98,7 +119,6 @@ describe('A vending machine that sells degrees', () => {
   describe('The Student wants to inputs an amount', () => {
     it('Should check the price of the selected Degree', () => {
       const { price } = degree.subject.vend(degree.name);
-      //   console.log(price);
       expect(price).toEqual(degree.data.stem[degree.name].price);
     });
     it('Should check the amount that the student inputted', () => {
@@ -116,7 +136,8 @@ describe('A vending machine that sells degrees', () => {
     it('Should not vend the item if there is not enough change', () => {
       const input = degree.subject.checkPrice(degree.data.inputAmount.less);
       const { price } = degree.subject.vend(degree.name);
-      const change = degree.subject.checkChange(input, price);
+      const { coinsLeft } = degree.subject.checkCoinCount();
+      const change = degree.subject.checkChange(input, price, coinsLeft);
       expect(change).toEqual(0);
     });
   });
