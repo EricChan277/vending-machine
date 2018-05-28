@@ -13,13 +13,22 @@ module.exports = class VendingMachine {
       let maxStock = Object.entries(stock)[i][1].maxStock;
       let missingStock = maxStock - currentStock;
 
-      if (missingStock === 0) {
-        return currentStock;
-      } else {
-        return (currentStock += missingStock);
-      }
+      return currentStock + missingStock;
     }
   }
+
+  fillChange(coins) {
+    let coinLength = Object.entries(coins).length;
+
+    for (let i = 0; i < coinLength; i++) {
+      let currentCoinAmount = Object.entries(coins)[i][1].currentAmount;
+      let maxCoinAmount = Object.entries(coins)[i][1].maxAmount;
+      let missingCoins = maxCoinAmount - currentCoinAmount;
+
+      return currentCoinAmount + missingCoins;
+    }
+  }
+
   vend(productName) {
     if (typeof productName !== 'string' || productName === '') {
       return 0;
@@ -35,16 +44,25 @@ module.exports = class VendingMachine {
     }
   }
   checkCoinCount(coins) {
-    return this.vendingData;
+    return this.vendingData.coinsLeft;
   }
-  checkChange(input, price, coinCount) {
+  checkChange(input, price) {
     if (typeof input !== 'number' || input === 0) {
       return 0;
     } else if (input < price) {
       return 0;
     } else {
-      let change = input - price;
-      return Number(change.toFixed(2));
+      let changeInt = input - price;
+      let change = Number(changeInt.toFixed(2));
+      return change;
     }
+  }
+  returnCoins(price, coinCount) {
+    for (let i = 0; i < Object.entries(coinCount).length; i++) {
+      let coinVal = Object.entries(coinCount)[i][1].value;
+      let coinName = Object.entries(coinCount)[i][0];
+      console.log(coinName + ' ' + coinVal);
+    }
+    console.log(price);
   }
 };

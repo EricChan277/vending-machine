@@ -51,7 +51,7 @@ describe('A vending machine that sells degrees', () => {
           maxStock: 5
         },
         compSci: {
-          price: 3.3,
+          price: 3.4,
           stock: 1,
           maxStock: 5
         },
@@ -67,25 +67,30 @@ describe('A vending machine that sells degrees', () => {
         less: 3
       },
       coinsLeft: {
-        quarter: {
-          value: 0.25,
-          amount: 10
-        },
-        dime: {
-          value: 0.1,
-          amount: 10
-        },
-        nickel: {
-          value: 0.05,
-          amount: 10
+        toonie: {
+          value: 2,
+          currentAmount: 10,
+          maxAmount: 10
         },
         loonie: {
           value: 1,
-          amount: 10
+          currentAmount: 3,
+          maxAmount: 10
         },
-        toonie: {
-          value: 2,
-          amount: 10
+        quarter: {
+          value: 0.25,
+          currentAmount: 5,
+          maxAmount: 10
+        },
+        dime: {
+          value: 0.1,
+          currentAmount: 10,
+          maxAmount: 10
+        },
+        nickel: {
+          value: 0.05,
+          currentAmount: 7,
+          maxAmount: 10
         }
       }
     };
@@ -108,6 +113,28 @@ describe('A vending machine that sells degrees', () => {
         const maxStock = Object.entries(degree.data.stem)[i][1].maxStock;
         expect(fillStock).toEqual(maxStock);
       }
+    });
+    it('Should not add anything if items are full', () => {
+      const stem = degree.subject.checkStock();
+      const fillStock = degree.subject.fillStock(stem);
+      const maxStock = Object.entries(degree.data.stem)[2][1].maxStock;
+      expect(fillStock).toEqual(maxStock);
+    });
+  });
+  describe('The stocker wants to refill the change', () => {
+    it('should refill the change to the max amount', () => {
+      const coins = degree.subject.checkCoinCount();
+      const fillChange = degree.subject.fillChange(coins);
+      for (let i = 0; i < Object.entries(degree.data.coinsLeft).length; i++) {
+        const maxAmount = Object.entries(degree.data.coinsLeft)[i][1].maxAmount;
+        expect(fillChange).toEqual(maxAmount);
+      }
+    });
+    it('should not refill anything if the amount of coins is already maxed', () => {
+      const coins = degree.subject.checkCoinCount();
+      const fillChange = degree.subject.fillChange(coins);
+      const maxCoins = Object.entries(degree.data.coinsLeft)[3][1].maxAmount;
+      expect(fillChange).toEqual(maxCoins);
     });
   });
   describe('The Student selects a Degree', () => {
@@ -136,9 +163,17 @@ describe('A vending machine that sells degrees', () => {
     it('Should not vend the item if there is not enough change', () => {
       const input = degree.subject.checkPrice(degree.data.inputAmount.less);
       const { price } = degree.subject.vend(degree.name);
-      const { coinsLeft } = degree.subject.checkCoinCount();
-      const change = degree.subject.checkChange(input, price, coinsLeft);
+      const change = degree.subject.checkChange(input, price);
       expect(change).toEqual(0);
+    });
+    it('Should return the change in coin form, if any', () => {
+      const input = degree.subject.checkPrice(degree.data.inputAmount.over);
+      const { price } = degree.subject.vend(degree.name);
+      const coins = degree.subject.checkCoinCount();
+      const change = degree.subject.checkChange(input, price);
+      const changeInCoins = degree.subject.returnCoins(change, coins);
+
+      expect(changeInCoins).toEqual(typeof {});
     });
   });
 });
